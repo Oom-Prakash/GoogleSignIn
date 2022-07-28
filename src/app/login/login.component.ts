@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { SocialAuthService, SocialUser } from "@abacritt/angularx-social-login";
 import { GoogleLoginProvider } from "@abacritt/angularx-social-login";
-import { Router, Routes } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
   private accessToken = '';
 
   constructor(private authService: SocialAuthService,
-    private router:Router) { }
+    private router:Router) {}
 
   refreshToken(): void {
     this.authService.refreshAuthToken(GoogleLoginProvider.PROVIDER_ID);
@@ -34,9 +34,12 @@ export class LoginComponent implements OnInit {
       this.user = user;
       this.loggedIn = (user != null);
 
+      console.log(this.user);
       if(this.user?.idToken != null)
       {
-this.router.navigateByUrl('dash');
+        console.log(this.user.idToken);
+        // localStorage.setItem('header',this.user.idToken);
+        this.router.navigateByUrl('dash');
       }
     });  }
 
