@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
   private accessToken = '';
 
   constructor(private authService: SocialAuthService,
-    private router:Router) {}
+    private router: Router) { }
 
   refreshToken(): void {
     this.authService.refreshAuthToken(GoogleLoginProvider.PROVIDER_ID);
@@ -30,17 +30,29 @@ export class LoginComponent implements OnInit {
 
 
   ngOnInit(): void {
+
     this.authService.authState.subscribe((user) => {
       this.user = user;
       this.loggedIn = (user != null);
-
       console.log(this.user);
-      if(this.user?.idToken != null)
+
+
+      if (this.user != null  && this.user.idToken !== null)
       {
-        console.log(this.user.idToken);
-        // localStorage.setItem('header',this.user.idToken);
-        this.router.navigateByUrl('dash');
+        setTimeout(() => 
+        {
+          localStorage.setItem('tokenId', this.user.idToken);
+          this.router.navigateByUrl('dash');
+          // console.log('routed from login');
+        }, 1000);
       }
-    });  }
+    });
+
+
+    if(localStorage.getItem('tokenId') !== null) 
+    {
+      this.router.navigateByUrl('dash');
+    }
+  }
 
 }
